@@ -1,0 +1,42 @@
+<% content_for :page_title do %>
+  <%= Spree.t(:google_tag_manager) %>
+<% end %>
+
+  <div id="preferences" data-hook>
+
+    <fieldset class="general no-border-top">
+
+        <div class="row">
+          <div class="col-md-6">
+
+            <%= form_tag admin_google_tag_manger_path, method: :put do |f| %>
+              <div class="form-group">
+                <%= label_tag :google_container_id %>
+                <%= text_field_tag  :google_container_id, 
+                                    Spree::Config[:google_container_id], 
+                                    class: 'form-control',
+                                    placeholder: 'e.g. GTM-WJQN52' 
+                %>
+              </div>
+
+              <div class="form-actions" data-hook="buttons">
+                <%= button Spree.t('actions.update'), 'save' %>
+                <span class="or"><%= Spree.t(:or) %></span>
+                <%= button_link_to  Spree.t('actions.cancel'), 
+                                    edit_admin_general_settings_url, icon: 'delete' 
+                %>
+              </div>
+
+            <% end %> 
+          
+          </div>
+
+          <div class="col-md-6">           
+            <%= ' ' %>
+          </div>        
+
+        </div>
+
+    </fieldset>
+
+  </div>

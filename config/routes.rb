@@ -1,3 +1,7 @@
 Spree::Core::Engine.routes.draw do
-  # Add your extension routes here
+  
+  namespace :admin do
+    resource :google_tag_manger, only: [:edit, :update]
+  end
+
 end
