@@ -7,12 +7,12 @@
 
       dataLayer = [];
       dataLayer.push({'transactionEmail': '<%= @order.email %>'});
-    <% end %>
-    <% if @order.present? and @order.user.present? %>
-      dataLayer.push({'userid': '<%= @order.user.id %>'});
-    <% end %>
+    
+      <% if @order.user.present? %>
+        dataLayer.push({'userid': '<%= @order.user.id %>'});
+      <% end %>
 
-  <% if flash['order_completed'] and @order.present? %>
+      <% if flash['order_completed'] and @order.present? %>
 
     <%# http://stackoverflow.com/questions/22530082/googletagmanager-with-turbolinks %>
 <!--     $(document).on('page:change', function(){
@@ -22,31 +22,32 @@
       });
     }); -->
 
-    dataLayer.push({
-      'transactionId': '<%= @order.number %>',
-      'transactionAffiliation': '<%= Spree::Store.current.name.gsub("'", '') %>',
-      'transactionTotal': <%= @order.total %>,
-      'transactionTax': <%= @order.adjustments.tax.sum(:amount) %>,
-      'transactionShipping': <%= @order.adjustments.shipping.sum(:amount) %>,
-      'transactionCity': '<%= @order.bill_address.city %>',
-      'transactionState': '<%= @order.bill_address.state_text %>',
-      'transactionZip': '<%= @order.bill_address.zipcode %>',
-      'transactionEmail': '<%= @order.email %>',
-      'transactionProducts': [
-        <%=raw @order.line_items.map { |line_item| "{ 'sku': '#{h line_item.variant.sku}',
-                                                      'name': '#{h line_item.variant.product.name}',
-                                                      'category': '#{ line_item.variant.product.taxons.first.try(:name) }',
-                                                      'price': #{h line_item.price},
-                                                      'quantity': #{h line_item.quantity}}" } .join(",") %>
-      ]
-    });
+        dataLayer.push({
+          'transactionId': '<%= @order.number %>',
+          'transactionAffiliation': '<%= Spree::Store.current.name.gsub("'", '') %>',
+          'transactionTotal': <%= @order.total %>,
+          'transactionTax': <%= @order.adjustments.tax.sum(:amount) %>,
+          'transactionShipping': <%= @order.adjustments.shipping.sum(:amount) %>,
+          'transactionCity': '<%= @order.bill_address.city %>',
+          'transactionState': '<%= @order.bill_address.state_text %>',
+          'transactionZip': '<%= @order.bill_address.zipcode %>',
+          'transactionEmail': '<%= @order.email %>',
+          'transactionProducts': [
+            <%=raw @order.line_items.map { |line_item| "{ 'sku': '#{h line_item.variant.sku}',
+                                                          'name': '#{h line_item.variant.product.name}',
+                                                          'category': '#{ line_item.variant.product.taxons.first.try(:name) }',
+                                                          'price': #{h line_item.price},
+                                                          'quantity': #{h line_item.quantity}}" } .join(",") %>
+          ]
+        });
+        <% end %>
 
-    <% if @order.user.present? and @order.user.orders.complete.count==1 %>
-    dataLayer.push({
-      'event': 'first_time_user_conversion'
-    });
-    <% end %>
-    });
+        <% if @order.user.present? and @order.user.orders.complete.count==1 %>
+        dataLayer.push({
+          'event': 'first_time_user_conversion'
+        });
+        <% end %>
+      });
   <% end %>
 
 <% end %>
