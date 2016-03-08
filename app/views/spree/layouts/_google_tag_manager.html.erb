@@ -15,13 +15,7 @@
       <% if flash['order_completed'] and @order.present? %>
 
     <%# http://stackoverflow.com/questions/22530082/googletagmanager-with-turbolinks %>
-<!--     $(document).on('page:change', function(){
-      dataLayer.push({
-        'event':'pageview',
-        'virtualUrl': window.location.pathname
-      });
-    }); -->
-
+    
         dataLayer.push({
           'transactionId': '<%= @order.number %>',
           'transactionAffiliation': '<%= Spree::Store.current.name.gsub("'", '') %>',
@@ -47,6 +41,7 @@
           'event': 'first_time_user_conversion'
         });
         <% end %>
+
       });
   <% end %>
 
