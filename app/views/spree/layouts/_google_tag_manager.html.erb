@@ -2,7 +2,7 @@
 
   <% if (Rails.env.production? || Rails.env.staging?) && @order.present? and @order.email.present? %>
 
-    $(document).on('page:change', function(){
+    //$(document).on('page:change', function(){
       console.log('PAGE HAS CHANGED');
 
       dataLayer = [];
@@ -42,7 +42,7 @@
         });
         <% end %>
 
-      });
+      //});
   <% end %>
 
 <% end %>
